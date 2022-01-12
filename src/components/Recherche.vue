@@ -11,10 +11,9 @@
           ></b-form-input>
           <br />
           <b-button
-            size="sm"
             class="my-2 my-sm-0"
             @click="$bvModal.show('display-film')"
-            variant="info"
+            variant="primary"
             >Recherche</b-button
           >
 
@@ -31,13 +30,28 @@
 
           <!-- Pop-up qui affiche les détails du film -->
           <b-modal id="display-film" hide-footer>
-            <template #modal-title>
+            <template #modal-title class="text-center">
               {{ getFilm() }}
             </template>
-            <div class="d-block text-center" v-if="film_actif">
-              <h3>Hello From This Modal!</h3>
+            <div class="d-block" v-if="film_actif">
+              <b-row>
+                <b-col v-if="film_actif.Poster !== 'N/A'">
+                  <b-img
+                    :src="getPoster()"
+                    fluid
+                    alt="Poster"
+                  ></b-img>
+                </b-col>
+                <b-col>
+                  <p>
+                    <span><b>Directeur: </b>{{ film_actif.Director }}</span>
+                    <br /><br />
+                    <span><b>Intrigue: </b>{{ film_actif.Plot }}</span>
+                  </p>
+                </b-col>
+              </b-row>
             </div>
-            <b-button class="mt-3" block @click="$bvModal.hide('display-film')"
+            <b-button class="mt-3 text-center" variant="dark" block @click="$bvModal.hide('display-film')"
               >Fermer</b-button
             >
           </b-modal>
@@ -83,6 +97,9 @@ export default {
       } else {
         return "Pas de film sélectionné";
       }
+    },
+    getPoster() {
+      return this.film_actif.Poster;
     },
   },
   mounted() {

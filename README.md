@@ -1,4 +1,6 @@
 # projet
+Interface qui permet de rechercher un film parmi ceux de l'API omdbapi.
+
 
 ## Project setup
 ```
