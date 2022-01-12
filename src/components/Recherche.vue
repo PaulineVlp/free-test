@@ -28,19 +28,16 @@
           >
           </b-form-datalist>
 
-          <!-- Pop-up qui affiche les détails du film -->
-          <b-modal id="display-film" hide-footer>
-            <template #modal-title class="text-center">
-              {{ getFilm() }}
+          <!-- Pop-up qui affiche les détails du film hide-footer -->
+          <b-modal id="display-film" centered>
+            <template #modal-title>
+              <b>{{ getFilm() }}</b>
             </template>
+
             <div class="d-block" v-if="film_actif">
               <b-row>
                 <b-col v-if="film_actif.Poster !== 'N/A'">
-                  <b-img
-                    :src="getPoster()"
-                    fluid
-                    alt="Poster"
-                  ></b-img>
+                  <b-img :src="getPoster()" fluid alt="Poster"></b-img>
                 </b-col>
                 <b-col>
                   <p>
@@ -51,9 +48,16 @@
                 </b-col>
               </b-row>
             </div>
-            <b-button class="mt-3 text-center" variant="dark" block @click="$bvModal.hide('display-film')"
-              >Fermer</b-button
-            >
+
+            <template #modal-footer>
+              <b-button
+                variant="dark"
+                class="float-right"
+                @click="$bvModal.hide('display-film')"
+              >
+                Fermer
+              </b-button>
+            </template>
           </b-modal>
         </b-col>
       </b-row>
@@ -67,11 +71,10 @@ export default {
   data: () => ({
     liste_films: [],
     query: "",
-    query_temp: "",
     film_actif: "",
   }),
   methods: {
-    getListFilms() {
+    getListFilms() { // recup liste des films de l'API
       const options = {
         headers: {
           Accept: "application/json",
@@ -87,7 +90,7 @@ export default {
           this.liste_films = response.data.Search;
         });
     },
-    getFilm() {
+    getFilm() { // recup données du film correspondant à ce qui a été rentré (query)
       var splitted = this.query.split(", ", 2);
       this.film_actif = this.liste_films.find(
         (film) => film.Title === splitted[0] && film.Year === splitted[1]
@@ -98,7 +101,7 @@ export default {
         return "Pas de film sélectionné";
       }
     },
-    getPoster() {
+    getPoster() { // retourne le lien de l'affiche du film
       return this.film_actif.Poster;
     },
   },
@@ -108,20 +111,6 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+
 </style>
